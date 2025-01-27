@@ -2,7 +2,7 @@ import NavBar from '../components/NavBar'
 
 export default function About() {
   return (
-    <div>
+    <div style={{ backgroundColor: '#f0f0f0' }}>
       <NavBar />
       <main style={{ padding: '2rem' }}>
         <h1>About Us</h1>
