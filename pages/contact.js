@@ -21,6 +21,10 @@ export default function Contact() {
       }
       const data = await res.json()
       setStatus('success')
+      // Clear form fields on successful submission
+      setName('')
+      setEmail('')
+      setMessage('')
     } catch (err) {
       setStatus('error')
     }
@@ -54,4 +58,3 @@ export default function Contact() {
     </div>
   )
 }
-
