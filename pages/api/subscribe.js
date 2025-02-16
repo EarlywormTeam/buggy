@@ -1,4 +1,9 @@
+import bodyParser from 'body-parser';
+
+const jsonParser = bodyParser.json();
+
 export default function handler(req, res) {
+  // Ensure we can parse the body
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -11,12 +16,6 @@ export default function handler(req, res) {
       return res.status(400).json({ message: 'Name and email are required' });
     }
 
-    // In a real app, you would:
-    // 1. Validate email format
-    // 2. Store the data in a database
-    // 3. Send confirmation emails
-    // 4. Handle rate limiting
-    
     // For now, we'll just return success
     res.status(200).json({ message: 'Subscribed successfully!' });
   } catch (error) {
