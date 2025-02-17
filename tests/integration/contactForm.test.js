@@ -32,9 +32,8 @@ test("Contact form submission fails with a 500 error", async () => {
 
   await stagehand.init();
   
-  // Navigate to the site using page.goto
-  const page = await stagehand.getPage();
-  await page.goto("http://localhost:3000/");
+  // Navigate to the site using act
+  await stagehand.act("Navigate to http://localhost:3000/");
   
   // Click the hamburger menu
   await stagehand.act("Click the gray hamburger menu button with three horizontal lines in the top right corner. NOTE: An error may appear, this is what we're testing for!");
