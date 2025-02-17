@@ -17,46 +17,47 @@ afterEach(async () => {
 });
 
 test("Contact form submission fails with a 500 error", async () => {
-  // Initialize Stagehand with required handlers
+  // Initialize Stagehand with minimal configuration
   stagehand = new Stagehand({
     env: "Local",
     debugDom: false,
     headless: true,
-    domSettleTimeoutMs: 30_000,
     modelName: "claude-3-5-sonnet-20241022",
     modelClientOptions: {
       apiKey: process.env.ANTHROPIC_API_KEY,
-    },
-    handlers: {
-      act: true,
-      extract: true
     }
   });
 
   await stagehand.init();
   
   try {
-    // Get the page instance
-    const page = await stagehand.browser.newPage();
-    await page.goto("http://localhost:3000/");
+    // Use act commands for navigation and interaction
+    await stagehand.act({
+      action: "Open the URL http://localhost:3000/",
+      waitForUrl: "http://localhost:3000/"
+    });
     
-    // Set the page in Stagehand
-    stagehand.setPage(page);
+    await stagehand.act({
+      action: "Click the hamburger menu button",
+      waitForElement: "button[aria-label='Menu']"
+    });
     
-    // Click the hamburger menu
-    await stagehand.act("Click the gray hamburger menu button with three horizontal lines in the top right corner");
+    await stagehand.act({
+      action: "Click the Contact link",
+      waitForUrl: "/contact"
+    });
     
-    // Click the Contact link
-    await stagehand.act("Click the 'Contact' link in the top navigation menu");
+    await stagehand.act({
+      action: "Fill out the contact form with name 'Sam Errorful', email 'chsw9e@virginia.edu', and message 'This is a test'",
+      waitForElement: "form"
+    });
     
-    // Fill out the contact form
-    await stagehand.act("Click the 'Name' text input field in the contact form");
-    await stagehand.act("Type \"Sam Errorful\" then Tab then \"chsw9e@virginia.edu\" then Tab then \"This is a test\"");
+    await stagehand.act({
+      action: "Click the Subscribe button",
+      waitForElement: "button[type='submit']"
+    });
     
-    // Submit the form
-    await stagehand.act("Click the blue 'Subscribe' button at the bottom of the contact form");
-    
-    // Check for error message - test should fail if error message is present
+    // Check for error message
     const errorResult = await stagehand.extract({
       instruction: "Check if there is a red error message stating 'An error occurred. Please try again.' on the screen",
       schema: ErrorMessageSchema
