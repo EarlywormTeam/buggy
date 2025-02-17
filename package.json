@@ -9,15 +9,15 @@
     "test": "vitest --run"
   },
   "dependencies": {
+    "@browserbasehq/stagehand": "^1.12.0",
+    "dotenv": "^16.4.7",
     "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@browserbasehq/stagehand": "^1.10.1",
-    "dotenv": "^16.4.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "vitest": "^3.0.4",
-    "playwright": "^1.50.0"
+    "playwright": "^1.50.0",
+    "vitest": "^3.0.4"
   }
 }
