@@ -17,6 +17,7 @@ afterEach(async () => {
 });
 
 test("Contact form submission fails with a 500 error", async () => {
+  // Initialize Stagehand with required handlers
   stagehand = new Stagehand({
     env: "Local",
     debugDom: false,
@@ -25,14 +26,22 @@ test("Contact form submission fails with a 500 error", async () => {
     modelName: "claude-3-5-sonnet-20241022",
     modelClientOptions: {
       apiKey: process.env.ANTHROPIC_API_KEY,
+    },
+    handlers: {
+      act: true,
+      extract: true
     }
   });
 
   await stagehand.init();
   
   try {
-    // Navigate to the site
-    await stagehand.act("Navigate to http://localhost:3000/");
+    // Get the page instance
+    const page = await stagehand.browser.newPage();
+    await page.goto("http://localhost:3000/");
+    
+    // Set the page in Stagehand
+    stagehand.setPage(page);
     
     // Click the hamburger menu
     await stagehand.act("Click the gray hamburger menu button with three horizontal lines in the top right corner");
