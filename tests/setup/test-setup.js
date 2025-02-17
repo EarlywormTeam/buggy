@@ -1,26 +1,24 @@
 import { beforeAll, afterAll, afterEach, vi } from 'vitest'
-import dotenv from 'dotenv'
 import { Stagehand } from "@browserbasehq/stagehand"
+import dotenv from 'dotenv'
 
 dotenv.config()
 
 vi.setConfig({ testTimeout: 300000 })
 
-let stagehand = null
-
-beforeAll(() => {
-  // Any global setup
+// Add the required processDom function to the browser context
+beforeAll(async () => {
+  const script = document.createElement('script')
+  script.textContent = `
+    window.processDom = function() {
+      return document.documentElement.outerHTML
+    }
+  `
+  document.head.appendChild(script)
 })
 
-afterEach(async () => {
-  if (stagehand) {
-    await stagehand.close()
-    stagehand = null
-  }
+afterAll(async () => {
+  // Cleanup
 })
 
-afterAll(() => {
-  // Any global cleanup
-})
-
-export { stagehand }
+export {}
